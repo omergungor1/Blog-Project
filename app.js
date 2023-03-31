@@ -51,13 +51,13 @@ app.get('/add-new-post', (req, res) => {
 });
 
 app.get('/blog/:id', (req, res) => {
-    res.render('postTest');
-    // const promise = Blog.findById(req.params.id).exec();
-    // promise.then((blog) => {
-    //     // res.render('post', { blog });
-    // }).catch((err) => {
-    //     console.log(err);
-    // });
+    // res.render('postTest');
+    const promise = Blog.findById(req.params.id).exec();
+    promise.then((blog) => {
+        res.render('post', { blog });
+    }).catch((err) => {
+        console.log(err);
+    });
 });
 
 app.post('/blogs', async (req, res) => {
