@@ -1,8 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const ßSchema = mongoose;
+const methodOverride = require('method-override');
 const ejs = require('ejs');
-const Blog = require('./models/Blog');
+const { getAllBlogs, getBlog, getEditPage, editBlog, deleteBlog, createBlog } = require('./controllers/blogControllers');
+const { getNewBlogPage, getAboutPage } = require('./controllers/pageControllers');
 
 const app = express();
 const port = 3000;
@@ -24,6 +25,7 @@ mongoose.connection.on('error', (err) => {
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 
 
 // TEMPLATE ENGINE
@@ -32,38 +34,20 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 //####### ROUTES #######
-app.get('/', (req, res) => {
-    const promise = Blog.find({}).exec();
-    promise.then((blogs) => {
-        res.render('index', { blogs });
-    }).catch((err) => {
-        console.log(err);
-    });
-});
+app.get('/', getAllBlogs);
+app.get('/blog/:id', getBlog);
+app.get('/blog/edit/:id', getEditPage);
+app.put('/blog/edit/:id', editBlog);
+app.delete('/blog/delete/:id', deleteBlog);
+app.post('/blogs', createBlog);
 
-app.get('/about', (req, res) => {
-    res.render('postTest');
-    // res.render('about');
-});
+app.get('/add-new-post', getNewBlogPage);
 
-app.get('/add-new-post', (req, res) => {
-    res.render('add_post');
-});
+app.get('/about', getAboutPage);
 
-app.get('/blog/:id', (req, res) => {
-    // res.render('postTest');
-    const promise = Blog.findById(req.params.id).exec();
-    promise.then((blog) => {
-        res.render('post', { blog });
-    }).catch((err) => {
-        console.log(err);
-    });
-});
 
-app.post('/blogs', async (req, res) => {
-    await Blog.create(req.body);
-    res.redirect('/');
-});
+
+
 
 //####### ROUTES #######
 

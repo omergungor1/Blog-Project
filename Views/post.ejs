@@ -36,6 +36,12 @@
               <p>
                 <%= blog.content %>
               </p>
+              <a href="/blog/edit/<%= blog._id %>" type="submit" class="btn btn-primary mt-5" id="updateButton">Update
+                Blog</a>
+              <a onclick="return confirm('Are you sure you want to delete this blog?');"
+                href="/blog/delete/<%= blog._id %>?_method=DELETE" type="submit" class="btn btn-primary mt-5"
+                id="updateButton">Delete
+                Blog</a>
             </div>
           </div>
         </div>
