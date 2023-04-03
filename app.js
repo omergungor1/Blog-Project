@@ -6,10 +6,14 @@ const { getAllBlogs, getBlog, getEditPage, editBlog, deleteBlog, createBlog } = 
 const { getNewBlogPage, getAboutPage } = require('./controllers/pageControllers');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // DATABASE CONNECTION
-mongoose.connect('mongodb://localhost:27017/cleanblog-test-db', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect('mongodb://localhost:27017/cleanblog-test-db', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://omergungorco:XecaYPfY6Sxi3zxV@cluster0.ygg0bio.mongodb.net/?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 // Veritabanı bağlantısı başarılı olduğunda tetiklenen olay
 mongoose.connection.on('connected', () => {
@@ -29,7 +33,7 @@ app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 
 
 // TEMPLATE ENGINE
-// app.set('views', './');
+app.set('views', './Views');
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
